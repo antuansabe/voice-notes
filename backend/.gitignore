@@ -1,0 +1,38 @@
+# Environment variables
+.env
+
+# Virtual environment
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Uploads folder
+uploads/
+*.wav
+*.mp3
+*.ogg
+*.m4a
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Flask
+instance/
+.webassets-cache
+
+# Distribution
+build/
+dist/
+*.egg-info/
