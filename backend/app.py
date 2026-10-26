@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, send_from_directory
 from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
+from werkzeug.exceptions import NotFound
 import time
 
 # Importar servicios
@@ -14,7 +15,7 @@ from services.pdf_service import PDFService
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=[*['https://ia-voicess.vercel.app', 'http://localhost:5173', 'http://localhost:3000'], *[origin.strip() for origin in os.getenv('FRONTEND_URL', '').split(',') if origin.strip()]])
 
 # Configuración
 UPLOAD_FOLDER = 'uploads'
@@ -283,18 +284,16 @@ def download_pdf(filename):
     Endpoint para descargar un PDF generado
     """
     try:
-        filepath = os.path.join(app.config['OUTPUT_FOLDER'], filename)
-        
-        if not os.path.exists(filepath):
-            return jsonify({"error": "Archivo no encontrado"}), 404
-        
-        return send_file(
-            filepath,
+        return send_from_directory(
+            os.path.abspath(app.config['OUTPUT_FOLDER']),
+            filename,
             mimetype='application/pdf',
             as_attachment=True,
             download_name=filename
         )
         
+    except NotFound:
+        return jsonify({"error": "Archivo no encontrado"}), 404
     except Exception as e:
         print(f"[ERROR] /download-pdf: {str(e)}")
         return jsonify({"error": f"Error: {str(e)}"}), 500
