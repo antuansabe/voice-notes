@@ -3,7 +3,7 @@ flask-cors==6.0.2
 azure-cognitiveservices-speech==1.47.0
 openai==1.55.3
 python-dotenv==1.2.2
-reportlab==4.2.5
+reportlab==5.1.0
 Pillow==13.0.0
 pydub==0.25.1
 gunicorn==23.0.0
